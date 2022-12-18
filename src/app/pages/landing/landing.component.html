@@ -1,1 +1,16 @@
-<p>landing works!</p>
+
+<div class="card">
+  <div class="card-header">
+    Enter the symbol of a stock to Track (i.e. AAPL, TSLA, GOOGL)
+  </div>
+  <div class="card-body">
+    <input type="text" [(ngModel)]="ticker" id="stockInput" (keydown.enter)="addTickerToList()">
+    <button type="button" id="trackBtn" [disabled]="!ticker" (click)="addTickerToList()">Track Stock</button>
+  </div>
+</div>
+
+<ng-container *ngIf="tickerArray">
+  <div *ngFor="let stockTicker of tickerArray">
+    <app-stock-card [stockTicker]="stockTicker"></app-stock-card>
+  </div>
+</ng-container>

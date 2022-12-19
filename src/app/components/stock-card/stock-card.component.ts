@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FinhubService} from '../../services/finhub.service';
-import {StockInfo} from '../../../../model/stock-info';
+import {StockUIData} from '../../../../model/stock-uidata';
 
 @Component({
   selector: 'app-stock-card',
@@ -9,16 +9,17 @@ import {StockInfo} from '../../../../model/stock-info';
 })
 export class StockCardComponent implements OnInit {
   @Input() stockTicker: string;
-  stockInfo: StockInfo;
+  stockUIData: StockUIData;
 
   constructor(public finhubService: FinhubService) {
   }
 
   ngOnInit(): void {
-    this.finhubService.getStockInfo(this.stockTicker).subscribe(stockInfo =>
-      this.stockInfo = stockInfo
-    )
+    this.finhubService.getStockUiData(this.stockTicker).subscribe(stockUIData => this.stockUIData = stockUIData);
   }
 
 
+  openSentimentPage() {
+    alert('open sentiment page for ticker: ' + this.stockTicker);
+  }
 }

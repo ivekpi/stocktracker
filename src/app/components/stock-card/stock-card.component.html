@@ -1,1 +1,12 @@
-<p>stock-card works!</p>
+<div class="card">
+  <div class="card-header">
+    {{stockUIData.companyName}}
+  </div>
+  <div class="card-body">
+    Change today:{{stockUIData.changeToday | percent}}<br>
+    Opening price:{{stockUIData.openingPrice | currency}}<br>
+    Current price:{{stockUIData.currentPrice | currency}}<br>
+    High price:{{stockUIData.highPrice | currency}}<br>
+    <button type="button" (click)="openSentimentPage()">Go to social sentiment details ></button>
+  </div>
+</div>

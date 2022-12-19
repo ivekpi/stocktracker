@@ -1,9 +1,4 @@
-export interface StockInfo {
-  /**
-   * Company name
-   */
-  companyName: string;
-
+export interface StockQuote {
   /**
    * Current price
    */

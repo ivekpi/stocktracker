@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StockCardComponent } from './components/stock-card/stock-card.component';
 import { StockSentimentComponent } from './components/stock-sentiment/stock-sentiment.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { StockSentimentComponent } from './components/stock-sentiment/stock-sent
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

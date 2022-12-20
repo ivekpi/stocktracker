@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {StockSentimentUiData} from '../model/stock-sentiment-uidata';
 
 @Component({
   selector: 'app-stock-sentiment',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./stock-sentiment.component.scss']
 })
 export class StockSentimentComponent {
+  @Input() stockSentimentUiData: StockSentimentUiData;
 
 }

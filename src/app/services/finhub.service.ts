@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {combineLatest, forkJoin, map, mergeMap, Observable} from 'rxjs';
-import {StockQuote} from '../../../model/stock-quote';
-import {StockProfile} from '../../../model/stock-profile';
-import {StockUIData} from '../../../model/stock-uidata';
-import {StockSentimentData} from '../../../model/stock-sentiment-data';
+import {StockQuote} from '../components/model/stock-quote';
+import {StockProfile} from '../components/model/stock-profile';
+import {StockUIData} from '../components/model/stock-uidata';
+import {MonthlyStockSentiment, StockSentiment} from '../components/model/stock-sentiment';
+import {StockSentimentUiData} from '../components/model/stock-sentiment-uidata';
+import {DatePipe} from '@angular/common';
+import {MonthlySentiment} from '../components/model/monthly-sentiment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,7 @@ export class FinhubService {
   };
   private static readonly QUOTE_URI = 'https://finnhub.io/api/v1/quote';
   private static readonly COMPANY_NAME_URI = 'https://finnhub.io/api/v1/stock/profile2';
-  private static readonly SENTIMENT_URI = 'hhttps://finnhub.io/api/v1/stock/insider-sentiment';
+  private static readonly SENTIMENT_URI = 'https://finnhub.io/api/v1/stock/insider-sentiment';
 
   constructor(public httpClient: HttpClient) { }
 
@@ -35,14 +38,31 @@ export class FinhubService {
     }));
   }
 
-  getSentimentData(symbol: string): Observable<StockSentimentData> {
-    let from = '2022-08-18';
-    let to = '2022-12-18';
+  getSentimentData(symbol: string): Observable<StockSentimentUiData> {
+    const datepipe: DatePipe = new DatePipe('en-US')
+    const currentDate = new Date();
+    let to = datepipe.transform(currentDate, 'YYYY-MM-dd') || '';
+    let from = datepipe.transform(currentDate.setMonth(currentDate.getMonth() - 3), 'YYYY-MM-dd') || '';
     return this.httpClient.get(FinhubService.SENTIMENT_URI, {params: {...FinhubService.API_KEY, symbol, from, to}})
       .pipe(
         map((response) => {
-          let sentiment = response as StockSentimentData;
-          return sentiment;
+          let sentiment = response as StockSentiment;
+          let sentimentUi = {} as StockSentimentUiData;
+          let monhtlySentimentUi = [] as MonthlySentiment[];
+          sentimentUi.companyName = 'Tesla';
+          sentimentUi.companyTicker = symbol;
+
+          sentiment.data.forEach((value: MonthlyStockSentiment) => {
+            const date = new Date(value.year, value.month);
+            const monthName = date.toLocaleString('default', { month: 'long' });
+            monhtlySentimentUi.push({
+              month: monthName,
+              change: value.change,
+              mspr: value.mspr
+            })
+          });
+          sentimentUi.monthlySentiments = monhtlySentimentUi;
+          return sentimentUi;
         })
       )
     ;

@@ -1,1 +1,5 @@
-<p>sentiment works!</p>
+<div *ngIf="stockSentiment">
+  <app-stock-sentiment [stockSentimentUiData]="stockSentiment"></app-stock-sentiment>
+</div>
+
+<button [routerLink]="'/'" id="backBtn">< Back to list of stocks</button>

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FinhubService} from '../../services/finhub.service';
-import {StockUIData} from '../../../../model/stock-uidata';
+import {StockUIData} from '../model/stock-uidata';
 
 @Component({
   selector: 'app-stock-card',

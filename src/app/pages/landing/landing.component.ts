@@ -16,7 +16,6 @@ export class LandingComponent {
       this.tickerArray.forEach((element) => {
         tickers += element + ',';
       });
-      alert(tickers);
       this.ticker = '';
     }
   }

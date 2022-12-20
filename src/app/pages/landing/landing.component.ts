@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {CacheService} from '../../services/cache.service';
 
 @Component({
   selector: 'app-landing',
@@ -6,16 +7,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
-  ticker: string
-  tickerArray: string[] = [];
+  ticker: string;
+  tickerArray: string[];
+
+  constructor(private cacheService : CacheService) {
+    this.tickerArray = cacheService.getTickers();
+  }
 
   addTickerToList() {
     if (this.ticker) {
-      this.tickerArray.push(this.ticker);
       let tickers: string = '';
       this.tickerArray.forEach((element) => {
         tickers += element + ',';
       });
+      this.tickerArray = this.cacheService.storeTicker(this.ticker);
       this.ticker = '';
     }
   }

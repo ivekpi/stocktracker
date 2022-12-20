@@ -4,6 +4,7 @@ import {combineLatest, forkJoin, map, mergeMap, Observable} from 'rxjs';
 import {StockQuote} from '../../../model/stock-quote';
 import {StockProfile} from '../../../model/stock-profile';
 import {StockUIData} from '../../../model/stock-uidata';
+import {StockSentimentData} from '../../../model/stock-sentiment-data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,71 +18,6 @@ export class FinhubService {
   private static readonly SENTIMENT_URI = 'hhttps://finnhub.io/api/v1/stock/insider-sentiment';
 
   constructor(public httpClient: HttpClient) { }
-
-  getStockInfoSync(ticker: string): StockQuote {
-    return {
-      c: 111,
-      dp: 111,
-      h: 111,
-      pc: 111,
-      o: 111,
-      l: 111,
-      d: 111
-    };
-    // return {
-    //   companyName: 'TESLA',
-    //   c: 111,
-    //   dp: 111,
-    //   h: 111,
-    //   pc: 111,
-    //   o: 111,
-    //   l: 111,
-    //   d: 111
-    // };
-  }
-
-  getStockInfo(symbol: string): Observable<StockUIData> {
-    return this.httpClient.get(FinhubService.QUOTE_URI, {params: {...FinhubService.API_KEY, symbol}})
-      .pipe(
-        map((rawResponse) => {
-          let stockQuote = rawResponse as StockQuote;
-
-          // this.httpClient.get(FinhubService.COMPANY_NAME_URI, {params: {...FinhubService.API_KEY, symbol}})
-          //   .pipe(
-          //     map((response) => {
-          //       let stockProfile = response as StockProfile;
-          //       return {
-          //         companyName: 'TSLA',
-          //         highPrice: stockQuote.h,
-          //         currentPrice: stockQuote.c,
-          //         openingPrice: stockQuote.o,
-          //         changeToday: stockQuote.dp/100
-          //       }
-          //     }
-          //
-          //   )
-          //   )
-
-          return {
-            companyName: 'TSLA',
-            highPrice: stockQuote.h,
-            currentPrice: stockQuote.c,
-            openingPrice: stockQuote.o,
-            changeToday: stockQuote.dp/100
-          }
-        })
-      )
-    ;
-    // return combineLatest([
-    //   this.httpClient.get(FinhubService.QUOTE_URI, {params: {...FinhubService.API_KEY, ticker}}),
-    //   this.httpClient.get(FinhubService.COMPANY_NAME_URI, {params: {...FinhubService.API_KEY, ticker}})
-    // ]).pipe(
-    //   map(([stock, company]) => {
-    //     let stockish = {...stock, companyName: (company as StockQuote).companyName} as StockQuote;
-    //     return stockish;
-    //   })
-    // );
-  }
 
   getStockUiData(symbol: string): Observable<StockUIData> {
     let stockQuote = this.httpClient.get(FinhubService.QUOTE_URI, {params: {...FinhubService.API_KEY, symbol}});
@@ -97,37 +33,18 @@ export class FinhubService {
         highPrice: quote.h
       };
     }));
+  }
 
-    // return this.httpClient.get(FinhubService.QUOTE_URI, {params: {...FinhubService.API_KEY, symbol}})
-    //   .pipe(
-    //     mergeMap((quoteResponse) => {
-    //       let stockQuote = quoteResponse as StockQuote;
-    //
-    //       // this.httpClient.get(FinhubService.COMPANY_NAME_URI, {params: {...FinhubService.API_KEY, symbol}})
-    //       //   .pipe(
-    //       //     map((response) => {
-    //       //       let stockProfile = response as StockProfile;
-    //       //       return {
-    //       //         companyName: 'TSLA',
-    //       //         highPrice: stockQuote.h,
-    //       //         currentPrice: stockQuote.c,
-    //       //         openingPrice: stockQuote.o,
-    //       //         changeToday: stockQuote.dp/100
-    //       //       }
-    //       //     }
-    //       //
-    //       //   )
-    //       //   )
-    //
-    //       return {
-    //         companyName: 'TSLA',
-    //         highPrice: stockQuote.h,
-    //         currentPrice: stockQuote.c,
-    //         openingPrice: stockQuote.o,
-    //         changeToday: stockQuote.dp/100
-    //       }
-    //     })
-    //   )
-    //   ;
+  getSentimentData(symbol: string): Observable<StockSentimentData> {
+    let from = '2022-08-18';
+    let to = '2022-12-18';
+    return this.httpClient.get(FinhubService.SENTIMENT_URI, {params: {...FinhubService.API_KEY, symbol, from, to}})
+      .pipe(
+        map((response) => {
+          let sentiment = response as StockSentimentData;
+          return sentiment;
+        })
+      )
+    ;
   }
 }

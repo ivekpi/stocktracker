@@ -17,9 +17,4 @@ export class StockCardComponent implements OnInit {
   ngOnInit(): void {
     this.finhubService.getStockUiData(this.stockTicker).subscribe(stockUIData => this.stockUIData = stockUIData);
   }
-
-
-  openSentimentPage() {
-    alert('open sentiment page for ticker: ' + this.stockTicker);
-  }
 }

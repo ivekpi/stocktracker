@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingComponent } from './pages/landing/landing.component';
+import { SentimentComponent } from './pages/sentiment/sentiment.component';
 import {FormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StockCardComponent } from './components/stock-card/stock-card.component';
@@ -15,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     LandingComponent,
     StockCardComponent,
-    StockSentimentComponent
+    StockSentimentComponent,
+    SentimentComponent
   ],
   imports: [
     BrowserModule,

@@ -2,14 +2,21 @@
   <div class="card-header">
     {{stockSentimentUiData.companyName}} ({{stockSentimentUiData.companyTicker}})
   </div>
-  <div class="card-body">
+  <div class="card-body row row-cols-3">
     <ng-container *ngFor="let monthlySentiment of stockSentimentUiData.monthlySentiments">
-      <div>
-        {{monthlySentiment.month}}<br>
-        Change:{{monthlySentiment.change}}<br>
-        MSPR:{{monthlySentiment.mspr}}<br>
-        <div *ngIf="monthlySentiment.change >= 0; else elseBlock"><img src="assets/images/green-arrow.png" alt="going up"></div>
-        <ng-template #elseBlock><div><img src="assets/images/red-arrow.png" alt="falling down"></div></ng-template>
+      <div class="col">
+        <div class="row row-cols-2">
+          <div class="col" style="text-align: right;">
+            {{monthlySentiment.month}}<br>
+            Change:{{monthlySentiment.change}}<br>
+            MSPR:{{monthlySentiment.mspr}}<br>
+          </div>
+          <div *ngIf="monthlySentiment.change >= 0; else elseBlock" class="col"><img src="assets/images/green-arrow.png"
+                                                                                     alt="going up"></div>
+          <ng-template #elseBlock>
+            <div class="col" style="text-align: left;"><img src="assets/images/red-arrow.png" alt="falling down"></div>
+          </ng-template>
+        </div>
       </div>
     </ng-container>
 

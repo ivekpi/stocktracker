@@ -12,6 +12,10 @@ export class LandingComponent {
 
   constructor(private cacheService : CacheService) {
     this.tickerArray = cacheService.getTickers();
+    cacheService.tickerArray$.subscribe(
+      tickerArray => {
+        this.tickerArray = tickerArray;
+      });
   }
 
   addTickerToList() {

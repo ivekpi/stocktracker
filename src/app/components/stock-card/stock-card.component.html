@@ -1,14 +1,23 @@
 <div *ngIf="stockUIData">
   <div class="card">
     <div class="card-header">
-      {{stockUIData.companyName}}
+      <div class="row" style="width: 100%">
+      <div class="col">
+        {{stockUIData.companyName}}
+      </div>
+      <div class="col" style="text-align: right;">
+        <button type="button" class="close" aria-label="Close" id="remove{{stockTicker}}" (click)="closeStockCard()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      </div>
     </div>
     <div class="card-body">
       Change today:{{stockUIData.changeToday | percent}}<br>
       Opening price:{{stockUIData.openingPrice | currency}}<br>
       Current price:{{stockUIData.currentPrice | currency}}<br>
       High price:{{stockUIData.highPrice | currency}}<br>
-      <button type="button" [routerLink]="'/sentiment/' + stockTicker">Go to social sentiment details ></button>
+      <button type="button" [routerLink]="'/sentiment/' + stockTicker" id="sentiment{{stockTicker}}">Go to social sentiment details ></button>
     </div>
   </div>
 </div>

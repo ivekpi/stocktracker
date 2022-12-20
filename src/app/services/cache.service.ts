@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import {tick} from '@angular/core/testing';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CacheService {
   private readonly localStorageItemKey = 'tickers';
-  private _tickerArray: string[] = [];
+  private tickerArray = new Subject<string[]>();
+  tickerArray$ = this.tickerArray.asObservable();
 
-  constructor() { }
-
-  getTickers() {
-    let simibi = localStorage.getItem(this.localStorageItemKey) || '[]';
-    const symbols = JSON.parse(simibi);
+  getTickers(): string[] {
+    const symbols = JSON.parse(localStorage.getItem(this.localStorageItemKey) || '[]');
     if (Array.isArray(symbols)) {
       return symbols;
     } else {
@@ -21,17 +19,16 @@ export class CacheService {
     }
   }
 
-  get tickerArray(): string[] {
-    return this._tickerArray;
-  }
-
-  storeTicker(ticker: string) {
+  storeTicker(ticker: string): string[] {
     let tickers = [...this.getTickers(), ticker];
     localStorage.setItem(this.localStorageItemKey, JSON.stringify(tickers));
     return tickers;
   }
 
-  // removeTicker(ticker: string) {
-  //   this._tickerArray.
-  // }
+  removeTicker(ticker: string) {
+    const filteredTicker = this.getTickers().filter(savedTicker => savedTicker !== ticker);
+    localStorage.setItem(this.localStorageItemKey, JSON.stringify(filteredTicker));
+    this.tickerArray.next(filteredTicker);
+  }
+
 }

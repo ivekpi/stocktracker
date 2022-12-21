@@ -2,23 +2,31 @@
   <div class="card-header">
     {{stockSentimentUiData.companyName}} ({{stockSentimentUiData.companyTicker}})
   </div>
-  <div class="card-body row row-cols-3">
-    <ng-container *ngFor="let monthlySentiment of stockSentimentUiData.monthlySentiments">
-      <div class="col">
-        <div class="row row-cols-2">
-          <div class="col" style="text-align: right;">
-            {{monthlySentiment.month}}<br>
-            Change:{{monthlySentiment.change}}<br>
-            MSPR:{{monthlySentiment.mspr}}<br>
+  <div class="card-body">
+    <div class="row row-cols-3"
+      *ngIf="(stockSentimentUiData.monthlySentiments && stockSentimentUiData.monthlySentiments.length > 0); else noSentimentBlock">
+      <ng-container *ngFor="let monthlySentiment of stockSentimentUiData.monthlySentiments">
+        <div class="col">
+          <div class="row row-cols-2">
+            <div class="col" style="text-align: right;">
+              {{monthlySentiment.month}}<br>
+              Change:{{monthlySentiment.change}}<br>
+              MSPR:{{monthlySentiment.mspr}}<br>
+            </div>
+            <div *ngIf="monthlySentiment.change >= 0; else redArrowBlock" class="col"><img
+              src="assets/images/green-arrow.png"
+              alt="going up"></div>
+            <ng-template #redArrowBlock>
+              <div class="col" style="text-align: left;"><img src="assets/images/red-arrow.png" alt="falling down">
+              </div>
+            </ng-template>
           </div>
-          <div *ngIf="monthlySentiment.change >= 0; else elseBlock" class="col"><img src="assets/images/green-arrow.png"
-                                                                                     alt="going up"></div>
-          <ng-template #elseBlock>
-            <div class="col" style="text-align: left;"><img src="assets/images/red-arrow.png" alt="falling down"></div>
-          </ng-template>
         </div>
-      </div>
-    </ng-container>
+      </ng-container>
+    </div>
+    <ng-template #noSentimentBlock>
+      <div>There is no sentiment data for the last 3 months for this stock</div>
+    </ng-template>
 
   </div>
 </div>

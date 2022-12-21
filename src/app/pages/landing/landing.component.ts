@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {CacheService} from '../../services/cache.service';
+import {FinhubService} from '../../services/finhub.service';
 
 @Component({
   selector: 'app-landing',
@@ -10,7 +11,7 @@ export class LandingComponent {
   ticker: string;
   tickerArray: string[];
 
-  constructor(private cacheService : CacheService) {
+  constructor(private cacheService : CacheService, private finhubService : FinhubService) {
     this.tickerArray = cacheService.getTickers();
     cacheService.tickerArray$.subscribe(
       tickerArray => {
@@ -20,12 +21,14 @@ export class LandingComponent {
 
   addTickerToList() {
     if (this.ticker) {
-      let tickers: string = '';
-      this.tickerArray.forEach((element) => {
-        tickers += element + ',';
-      });
-      this.tickerArray = this.cacheService.storeTicker(this.ticker);
-      this.ticker = '';
+      this.finhubService.getStockProfile(this.ticker).subscribe((stockProfile) => {
+        if (stockProfile && stockProfile.name) {
+          this.tickerArray = this.cacheService.storeTicker(this.ticker);
+        } else {
+          alert("Stock with ticker " + this.ticker + " does not exist!!");
+        }
+        this.ticker = '';
+      })
     }
   }
 }

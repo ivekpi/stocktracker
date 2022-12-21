@@ -23,6 +23,13 @@ export class FinhubService {
 
   constructor(public httpClient: HttpClient) { }
 
+  getStockProfile(symbol: string): Observable<StockProfile> {
+    return this.httpClient.get(FinhubService.COMPANY_NAME_URI, {params: {...FinhubService.API_KEY, symbol}})
+      .pipe(map((stockProfileResponse) => {
+      return stockProfileResponse as StockProfile;
+    }));
+  }
+
   getStockUiData(symbol: string): Observable<StockUIData> {
     let stockQuote = this.httpClient.get(FinhubService.QUOTE_URI, {params: {...FinhubService.API_KEY, symbol}});
     let stockProfile = this.httpClient.get(FinhubService.COMPANY_NAME_URI, {params: {...FinhubService.API_KEY, symbol}});

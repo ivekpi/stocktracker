@@ -31,4 +31,8 @@ export class CacheService {
     this.tickerArray.next(filteredTicker);
   }
 
+  tickerNotInCache(ticker: string): boolean {
+    return this.getTickers().filter(savedTicker => savedTicker === ticker).length === 0;
+  }
+
 }

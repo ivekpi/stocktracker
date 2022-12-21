@@ -21,14 +21,19 @@ export class LandingComponent {
 
   addTickerToList() {
     if (this.ticker) {
-      this.finhubService.getStockProfile(this.ticker).subscribe((stockProfile) => {
-        if (stockProfile && stockProfile.name) {
-          this.tickerArray = this.cacheService.storeTicker(this.ticker);
-        } else {
-          alert("Stock with ticker " + this.ticker + " does not exist!!");
-        }
+      if (this.cacheService.tickerNotInCache(this.ticker)) {
+        this.finhubService.getStockProfile(this.ticker).subscribe((stockProfile) => {
+          if (stockProfile && stockProfile.name) {
+            this.tickerArray = this.cacheService.storeTicker(this.ticker);
+          } else {
+            alert("Stock with ticker " + this.ticker + " does not exist!!");
+          }
+          this.ticker = '';
+        })
+      } else {
+        alert("Stock with ticker " + this.ticker + " already in the list");
         this.ticker = '';
-      })
+      }
     }
   }
 }

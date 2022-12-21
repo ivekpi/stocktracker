@@ -16,7 +16,6 @@ export class SentimentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
-      console.log('route param: ' + params.get('symbol'));
       const routeParam = params.get('symbol');
       if (routeParam) {
         this.finhubService.getSentimentData(routeParam).subscribe(stockSentiment => this.stockSentiment = stockSentiment);

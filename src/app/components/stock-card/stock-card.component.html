@@ -13,10 +13,10 @@
       </div>
     </div>
     <div class="card-body">
-      Change today:{{stockUIData.changeToday | percent}}<br>
-      Opening price:{{stockUIData.openingPrice | currency}}<br>
-      Current price:{{stockUIData.currentPrice | currency}}<br>
-      High price:{{stockUIData.highPrice | currency}}<br>
+      Change today: {{numberSign}}{{stockUIData.changeToday/100 | percent:'1.2':'en-US'}}<br>
+      Opening price: {{stockUIData.openingPrice | currency}}<br>
+      Current price: {{stockUIData.currentPrice | currency}}<br>
+      High price: {{stockUIData.highPrice | currency}}<br>
       <button type="button" [routerLink]="'/sentiment/' + stockTicker" id="sentiment{{stockTicker}}">Go to social sentiment details ></button>
     </div>
   </div>

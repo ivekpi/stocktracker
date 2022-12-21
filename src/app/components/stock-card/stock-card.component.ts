@@ -11,12 +11,18 @@ import {CacheService} from '../../services/cache.service';
 export class StockCardComponent implements OnInit {
   @Input() stockTicker: string;
   stockUIData: StockUIData;
+  numberSign: string;
 
   constructor(public finhubService: FinhubService, private cacheService: CacheService) {
   }
 
   ngOnInit(): void {
-    this.finhubService.getStockUiData(this.stockTicker).subscribe(stockUIData => this.stockUIData = stockUIData);
+    this.finhubService.getStockUiData(this.stockTicker).subscribe(stockUIData => {
+      this.stockUIData = stockUIData;
+      if (this.stockUIData.changeToday > 0) {
+        this.numberSign = '+';
+      }
+    });
   }
 
   closeStockCard() {
